@@ -9,9 +9,13 @@ Application is feching the data from the PostgreSQL database. Core of the websit
 ---
 # Screenshots
 Shop page:
-
+![store_pic.png](https://github.com/ArturRejment/ecommerce-website/blob/main/ecommerce/static/images/store_pic.png?raw=true)
 
 Cart page:
+![cart_pic.png](https://github.com/ArturRejment/ecommerce-website/blob/main/ecommerce/static/images/cart_pic.png?raw=true)
 
 
 Checkout page:
+![checkout_pic.png](https://github.com/ArturRejment/ecommerce-website/blob/main/ecommerce/static/images/checkout_pic.png?raw=true)
+
+Webiste created with Dennis Ivy's online course.
