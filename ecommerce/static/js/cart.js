@@ -11,7 +11,26 @@ for (var i = 0; i < updateBtns.length; i++)
         if (user == 'AnonymousUser') {
             console.log('Not logged in')
         } else {
-            console.log('User logged in')
+            updateUserOrder(productId, action)
         }
     })
+}
+
+function updateUserOrder(productId, action) {
+    var url = '/update_item/'
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken' : csrftoken, // Csrf token passed declared in main.html header
+        },
+        body: JSON.stringify({ 'productId': productId, 'action': action })
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Data:', data)
+        });
 }

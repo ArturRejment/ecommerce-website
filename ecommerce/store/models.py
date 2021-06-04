@@ -30,7 +30,7 @@ class Product(models.Model):
     
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=False)
-    date_ordered = models.DateTimeField(auto_now=False, auto_now_add=False)
+    date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=50, null=True)
     
@@ -53,7 +53,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default = 0, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now=False, auto_now_add=False)
+    date_added = models.DateTimeField(auto_now_add=True)
     
     @property
     def get_total(self):
