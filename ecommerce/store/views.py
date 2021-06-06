@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse
 import datetime
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -33,12 +34,11 @@ def cart(request):
         cartItems = order.get_cart_items
     else:
         items = []
-        order = {'get_cart_total':0, 'get_cart_item':0}
+        order = {'get_cart_total':0, 'get_cart_items':0}
         cartItems = order["get_cart_items"]
         
     context = {'items':items, 'order':order, "cartItems": cartItems}
     return render(request, 'store/cart.html', context)
-
 
 def checkout(request):
     
@@ -50,7 +50,7 @@ def checkout(request):
         shipping = order.shipping
     else:
         items = []
-        order = {'get_cart_total': 0, 'get_cart_item': 0, 'shipping': False}
+        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cartItems = order["get_cart_items"]
         shipping = order["shipping"]
     
@@ -82,6 +82,8 @@ def updateItem(request):
         orderItem.delete()
     return JsonResponse('Item was added', safe=False)
 
+
+# @csrf_exempt
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
