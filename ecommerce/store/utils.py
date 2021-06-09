@@ -33,8 +33,11 @@ def cookieCart(request):
             }
             items.append(cart_item)
             
+            order['shipping'] = False
+            
             if product.digital == False:
                 order['shipping'] = True
+            
         except:
             pass
     return {'cartItems': cartItems, 'order': order, 'items':items}
@@ -52,6 +55,34 @@ def cartData(request):
         cartItems = cookieData['cartItems']
         order = cookieData['order']
         items = cookieData['items']
-        shipping = order['shipping']
+        shipping = order.get("shipping")
     
     return {'items': items, 'order': order, 'cartItems': cartItems, 'shipping': shipping}
+
+def guestOrder(request, data):
+    name = data['form']['name']
+    email = data['form']['email']
+
+    cookieData = cookieCart(request)
+    items = cookieData['items']
+
+    customer, created = Customer.objects.get_or_create(
+        email=email,
+    )
+    customer.name = name
+    customer.save()
+
+    order = Order.objects.create(
+        customer=customer,
+        complete=False,
+    )
+
+    for item in items:
+        product = Product.objects.get(id=item['product']['id'])
+
+        orderItem = OrderItem.objects.create(
+            product=product,
+            order=order,
+            quantity=item['quantity']
+        )
+    return customer, order
