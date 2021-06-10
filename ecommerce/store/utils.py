@@ -1,21 +1,22 @@
 import json
 from .models import *
 
+
 def cookieCart(request):
     try:
         cart = json.loads(request.COOKIES['cart'])
     except:
         cart = {}
-        
+
     items = []
-    order = {'get_cart_total':0, 'get_cart_items':0}
+    order = {'get_cart_total': 0, 'get_cart_items': 0}
     cartItems = order["get_cart_items"]
 
     for item in cart:
         try:
             cartItems += cart[item]['quantity']
-            
-            product = Product.objects.get(id = item)
+
+            product = Product.objects.get(id=item)
             total = (product.price * cart[item]['quantity'])
 
             order['get_cart_total'] += total
@@ -32,15 +33,16 @@ def cookieCart(request):
                 'get_total': total
             }
             items.append(cart_item)
-            
+
             order['shipping'] = False
-            
+
             if product.digital == False:
                 order['shipping'] = True
-            
+
         except:
             pass
-    return {'cartItems': cartItems, 'order': order, 'items':items}
+    return {'cartItems': cartItems, 'order': order, 'items': items}
+
 
 def cartData(request):
     if request.user.is_authenticated:
@@ -56,8 +58,9 @@ def cartData(request):
         order = cookieData['order']
         items = cookieData['items']
         shipping = order.get("shipping")
-    
+
     return {'items': items, 'order': order, 'cartItems': cartItems, 'shipping': shipping}
+
 
 def guestOrder(request, data):
     name = data['form']['name']
